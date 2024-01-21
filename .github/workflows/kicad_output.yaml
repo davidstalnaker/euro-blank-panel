@@ -1,0 +1,39 @@
+name: kicad_output
+
+on:
+  push:
+    paths:
+      - ".github/workflows/*"
+      - "**.kibot.yaml"
+      - "**.kicad_sch"
+      - "**.kicad_pcb"
+  pull_request:
+    paths:
+      - "**.kicad_sch"
+      - "**.kicad_pcb"
+
+jobs:
+  kicad_output:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: INTI-CMNB/KiBot@v2_k7
+        with:
+          config: output.kibot.yaml
+          dir: kicad_output/2u
+          board: "euro-blank-panel-2u.kicad_pcb"
+      - uses: INTI-CMNB/KiBot@v2_k7
+        with:
+          config: output.kibot.yaml
+          dir: kicad_output/4u
+          board: "euro-blank-panel-4u.kicad_pcb"
+      - uses: INTI-CMNB/KiBot@v2_k7
+        with:
+          config: output.kibot.yaml
+          dir: kicad_output/8u
+          board: "euro-blank-panel-8u.kicad_pcb"
+      - name: upload results
+        uses: actions/upload-artifact@v2
+        with:
+          name: kicad_output
+          path: kicad_output
